@@ -69,6 +69,7 @@ def _kwargs_with_environment_defaults(
     env_vars_by_provider = {
         "gemini": ("GEMINI_API_KEY", "LANGEXTRACT_API_KEY"),
         "gpt": ("OPENAI_API_KEY", "LANGEXTRACT_API_KEY"),
+        "siliconflow": ("SILICONFLOW_API_KEY", "LANGEXTRACT_API_KEY"),
     }
 
     for provider_prefix, env_vars in env_vars_by_provider.items():
@@ -95,6 +96,11 @@ def _kwargs_with_environment_defaults(
   if "ollama" in model_id.lower() and "base_url" not in resolved:
     resolved["base_url"] = os.getenv(
         "OLLAMA_BASE_URL", "http://localhost:11434"
+    )
+
+  if "siliconflow" in model_id.lower() and "base_url" not in resolved:
+    resolved["base_url"] = os.getenv(
+        "SILICONFLOW_BASE_URL", "https://api.siliconflow.cn/v1"
     )
 
   return resolved

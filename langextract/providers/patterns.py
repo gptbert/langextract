@@ -24,6 +24,7 @@ GEMINI_PRIORITY = 10
 
 # OpenAI provider patterns
 OPENAI_PATTERNS = (
+    r'^siliconflow/',
     r'^gpt-4',
     r'^gpt4\.',
     r'^gpt-5',

@@ -48,4 +48,9 @@ BUILTIN_PROVIDERS: list[ProviderConfig] = [
         'target': 'langextract.providers.openai:OpenAILanguageModel',
         'priority': patterns.OPENAI_PRIORITY,
     },
+    {
+        'patterns': ('^siliconflow$',),
+        'target': 'langextract.providers.openai:OpenAILanguageModel',
+        'priority': patterns.OPENAI_PRIORITY,
+    },
 ]

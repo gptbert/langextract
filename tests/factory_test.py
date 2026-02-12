@@ -75,7 +75,7 @@ class FactoryTest(absltest.TestCase):  # pylint: disable=too-many-public-methods
     providers_module._plugins_loaded = True
     # Use direct registration for test providers to avoid module path issues
     router.register(r"^gemini", priority=100)(FakeGeminiProvider)
-    router.register(r"^gpt", r"^o1", priority=100)(FakeOpenAIProvider)
+    router.register(r"^gpt", r"^o1", r"^siliconflow", priority=100)(FakeOpenAIProvider)
 
   def tearDown(self):
     super().tearDown()
@@ -118,6 +118,26 @@ class FactoryTest(absltest.TestCase):  # pylint: disable=too-many-public-methods
 
     model = factory.create_model(config)
     self.assertEqual(model.api_key, "env-openai-key")
+
+
+  @mock.patch.dict(os.environ, {"SILICONFLOW_API_KEY": "env-siliconflow-key"})
+  def test_uses_siliconflow_api_key_from_environment(self):
+    """Factory should use SILICONFLOW_API_KEY for SiliconFlow models."""
+    config = factory.ModelConfig(model_id="siliconflow/deepseek-ai/DeepSeek-V3")
+
+    model = factory.create_model(config)
+    self.assertEqual(model.api_key, "env-siliconflow-key")
+
+  @mock.patch.dict(os.environ, {}, clear=True)
+  def test_sets_siliconflow_default_base_url(self):
+    """Factory sets SiliconFlow default base URL when not provided."""
+    config = factory.ModelConfig(
+        model_id="siliconflow/deepseek-ai/DeepSeek-V3",
+        provider_kwargs={"api_key": "test-key"},
+    )
+
+    model = factory.create_model(config)
+    self.assertEqual(model.kwargs.get("base_url"), "https://api.siliconflow.cn/v1")
 
   @mock.patch.dict(
       os.environ, {"LANGEXTRACT_API_KEY": "env-langextract-key"}, clear=True
