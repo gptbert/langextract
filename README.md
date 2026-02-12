@@ -321,6 +321,28 @@ result = lx.extract(
 
 Note: OpenAI models require `fence_output=True` and `use_schema_constraints=False` because LangExtract doesn't implement schema constraints for OpenAI yet.
 
+### Using SiliconFlow (OpenAI-Compatible API)
+
+SiliconFlow can be used through the built-in OpenAI provider:
+
+```python
+import langextract as lx
+
+result = lx.extract(
+    text_or_documents=input_text,
+    prompt_description=prompt,
+    examples=examples,
+    model_id="siliconflow/deepseek-ai/DeepSeek-V3",
+    fence_output=True,
+    use_schema_constraints=False,
+)
+```
+
+Environment variables supported for this path:
+
+- `SILICONFLOW_API_KEY` (or fallback `LANGEXTRACT_API_KEY`)
+- `SILICONFLOW_BASE_URL` (defaults to `https://api.siliconflow.cn/v1`)
+
 ## Using Local LLMs with Ollama
 LangExtract supports local inference using Ollama, allowing you to run models without API keys:
 

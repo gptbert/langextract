@@ -91,7 +91,11 @@ class OpenAILanguageModel(base_model.BaseLanguageModel):
           'Install with: pip install langextract[openai]'
       ) from e
 
-    self.model_id = model_id
+    resolved_model_id = model_id
+    if model_id.lower().startswith('siliconflow/'):
+      resolved_model_id = model_id.split('/', 1)[1]
+
+    self.model_id = resolved_model_id
     self.api_key = api_key
     self.base_url = base_url
     self.organization = organization
